@@ -4,6 +4,8 @@ Imports System.Text
 Imports System.Runtime.InteropServices
 Imports System
 Imports System.IO.Ports
+Imports System.Threading
+
 
 
 Public Class Form1
@@ -17,12 +19,11 @@ Public Class Form1
         read = Cmd("ver")
         'TextBox1.Text = read
 
-
         Dim root As String = "C:\Program Files (x86)\Microchip\MPLABX\v3.55\mplab_ipe"
         Directory.SetCurrentDirectory(root)
 
         'TextBox1.Text = cmdline("")
-        cmdline("")
+        'cmdline("")
 
         Timer1.Enabled = False
         comPORT = ""
@@ -186,7 +187,7 @@ Public Class Form1
                 SerialPort1.ReadTimeout = 10000
 
                 SerialPort1.Open()
-                connect_BTN.Text = "Dis-connect"
+                connect_BTN.Text = "Disconnect"
                 Timer1.Enabled = True
                 Timer_LBL.Text = "Timer: ON"
             Else
@@ -202,9 +203,21 @@ Public Class Form1
 
     Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
         receivedData = ReceiveSerialData()
-        If (receivedData.Trim() = "Button pushed.") Then
-            KeyDown_Enter()
-        End If
+        'If (receivedData.Trim() = "Button pressed.") Then
+        '    KeyDown_Enter()
+        '    MsgBox("KeyDown_Enter")
+        'End If
+
+        Select Case receivedData.Trim()
+            Case "Button pressed."
+                MsgBox("Button pressed.")
+            Case "Button released."
+                MsgBox("Button released.")
+
+        End Select
+
+
+
         TextBox1.Text += receivedData
     End Sub
 
@@ -234,5 +247,74 @@ Public Class Form1
     Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles Button6.Click
         Dim hWnd As Integer = FindWindow(vbNullString, path + "pk3cmd.exe")
         ShowWindow(hWnd, SW_SHOW)
+    End Sub
+
+
+
+    Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
+        If SerialPort1.IsOpen Then
+            Timer1.Enabled = False
+
+            Dim sumData(5) As Integer
+            Dim resultData() As Integer
+
+            For j = 1 To 10
+                resultData = CapturedAnalog()
+                For i = 0 To 5
+                    sumData(i) = (sumData(i) * (j - 1) + resultData(i)) / j
+                Next
+            Next
+
+            resultData = CapturedAnalog()
+            Dim diffData(5) As Integer
+            Dim tmp As String = ""
+
+            For index = 0 To 5
+                diffData(index) = resultData(index) - sumData(index)
+                tmp += sumData(index).ToString
+                tmp += ","
+            Next
+
+            TextBox1.Text = tmp
+
+
+            'SerialPort1.WriteLine("fac")
+            'TextBox1.Text = SerialPort1.ReadLine().Trim
+
+            Timer1.Enabled = True
+        End If
+
+    End Sub
+
+
+    Public Function CapturedAnalog() As Integer()
+        SerialPort1.WriteLine("analog")
+
+        Thread.Sleep(20)
+        Dim receviedData As String = SerialPort1.ReadLine()
+        receviedData.Trim()
+
+        Dim tmp As String = Mid(receviedData, 2, receviedData.Length - 3)
+        Dim data() As String = tmp.Split(",")
+        Dim intData(5) As Integer
+        If data.Length = 6 Then
+            For index = 0 To 5
+                intData(index) = Val(data(index))
+            Next
+        Else
+            For index = 0 To 5
+                intData(index) = 0
+            Next
+        End If
+
+
+        Return intData
+    End Function
+
+    Private Sub Form1_FormClosing(sender As System.Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+        If SerialPort1.IsOpen Then
+            SerialPort1.Close()
+            SerialPort1.Dispose()
+        End If
     End Sub
 End Class

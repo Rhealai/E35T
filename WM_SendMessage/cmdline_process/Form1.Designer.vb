@@ -35,14 +35,16 @@ Partial Class Form1
         Me.Timer_LBL = New System.Windows.Forms.Label()
         Me.Button5 = New System.Windows.Forms.Button()
         Me.Button6 = New System.Windows.Forms.Button()
+        Me.Button7 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(212, 23)
+        Me.TextBox1.Location = New System.Drawing.Point(331, 23)
         Me.TextBox1.Multiline = True
         Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(299, 301)
+        Me.TextBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
+        Me.TextBox1.Size = New System.Drawing.Size(207, 301)
         Me.TextBox1.TabIndex = 0
         '
         'Button2
@@ -116,7 +118,7 @@ Partial Class Form1
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(75, 23)
         Me.Button5.TabIndex = 8
-        Me.Button5.Text = "Button5"
+        Me.Button5.Text = "SW_HIDE"
         Me.Button5.UseVisualStyleBackColor = True
         '
         'Button6
@@ -125,14 +127,24 @@ Partial Class Form1
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(75, 23)
         Me.Button6.TabIndex = 9
-        Me.Button6.Text = "Button6"
+        Me.Button6.Text = "SW_SHOW"
         Me.Button6.UseVisualStyleBackColor = True
+        '
+        'Button7
+        '
+        Me.Button7.Location = New System.Drawing.Point(188, 23)
+        Me.Button7.Name = "Button7"
+        Me.Button7.Size = New System.Drawing.Size(137, 41)
+        Me.Button7.TabIndex = 10
+        Me.Button7.Text = "SendMessage"
+        Me.Button7.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(550, 374)
+        Me.Controls.Add(Me.Button7)
         Me.Controls.Add(Me.Button6)
         Me.Controls.Add(Me.Button5)
         Me.Controls.Add(Me.Timer_LBL)
@@ -161,5 +173,6 @@ Partial Class Form1
     Friend WithEvents Timer_LBL As System.Windows.Forms.Label
     Friend WithEvents Button5 As System.Windows.Forms.Button
     Friend WithEvents Button6 As System.Windows.Forms.Button
+    Friend WithEvents Button7 As System.Windows.Forms.Button
 
 End Class
