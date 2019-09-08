@@ -1,0 +1,11 @@
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\bin\Debug\cmdline_process.exe.config
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.exe
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.xml
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.pdb
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\bin\Debug\cmdline_process.exe
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\bin\Debug\cmdline_process.pdb
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\bin\Debug\cmdline_process.xml
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Form_Debug.resources
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Resources.resources
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\E35T_FW_Programmer.vbproj.GenerateResource.Cache
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Form1.resources
