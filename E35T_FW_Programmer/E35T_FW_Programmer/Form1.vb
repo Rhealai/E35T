@@ -74,24 +74,56 @@ Public Class Form1
     Public Const WM_KEYDOWN = &H100
     Public Const VK_ENTER As Integer = &HD
 
-    Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
+    Dim BurningFlag As Boolean
 
+    Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
+        Dim hWnd As Integer
         'If (receivedData.Trim() = "Button pressed.") Then
         '    KeyDown_Enter()
         '    MsgBox("KeyDown_Enter")
         'End If
 
         receivedData = ReceiveSerialData().Trim
+        hWnd = FindWindow(vbNullString, My.Settings.ControlWinName)
 
         Select Case receivedData
             Case "Button pressed."
                 lbProbePin.Text = "探針接觸狀態:接觸"
                 ledStatus2.FillColor = Color.Green
 
-                Dim blProcess As Boolean = True
-                Dim hWnd As Integer = FindWindow(vbNullString, My.Settings.ControlWinName)
-                PostMessage(hWnd, WM_KEYDOWN, 13, 0)
+                If CmdRdy Then
+                    CalcAnalogData()
 
+                    Dim tmp As Integer = 0
+                    For index = 0 To 5
+                        tmp += diffData(index)
+                    Next
+
+                    If tmp > 50 Then
+                        SignalCheck = False
+                        RichTextBox1.Text += "此電路板尚未燒錄" & vbCrLf
+
+                        PostMessage(hWnd, WM_KEYDOWN, 13, 0)
+                        RichTextBox1.Text += "開始進行燒錄" & vbCrLf
+
+                        BurningFlag = True
+
+                    Else
+                        SignalCheck = True
+                        RichTextBox1.Text += "此電路已燒錄" & vbCrLf
+                        RichTextBox1.Text += "請移除電路板" & vbCrLf
+                        Dim tmpResult As String = ""
+
+                        For index = 0 To 4
+                            tmpResult &= resultData(index).ToString & ","
+                        Next
+                        tmpResult &= resultData(5).ToString
+                        RichTextBox1.Text += tmpResult & vbCrLf
+
+                        BurningFlag = False
+
+                    End If
+                End If
 
             Case "Button released."
                 lbProbePin.Text = "探針接觸狀態:分開"
@@ -103,9 +135,28 @@ Public Class Form1
         'End If
         receivedData = ""
 
+        If BurningFlag Then
+            lbProcessStatus.Text = "燒錄程序:韌體燒錄中"
+            ledStatus1.FillColor = Color.Red
+
+            If SignalCheck Then
+                lbProcessStatus.Text = "燒錄程序:完成燒錄"
+                ledStatus1.FillColor = Color.Green
+                BurningFlag = False
+            End If
+   
+
+        Else
+            If hWnd <> 0 Then
+                lbProcessStatus.Text = "燒錄程序:燒錄程式就緒"
+                ledStatus1.FillColor = Color.Green
+            Else
+                lbProcessStatus.Text = "燒錄程序:燒錄程式未就緒"
+                ledStatus1.FillColor = Color.Yellow
+            End If
+        End If
 
 
-        RichTextBox1.Text += receivedData.Trim
 
     End Sub
 
@@ -115,9 +166,16 @@ Public Class Form1
         End If
     End Sub
 
+    Const WM_CLOSE = &H10
     Private Sub Form1_FormClosing(sender As System.Object, e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
         If SerialPort1.IsOpen Then
             SerialPort1.Close()
+        End If
+
+        Dim hWnd As Integer = FindWindow(vbNullString, My.Settings.ControlWinName)
+
+        If hWnd <> 0 Then
+            PostMessage(hWnd, WM_CLOSE, 0, 0)
         End If
     End Sub
 
@@ -157,22 +215,14 @@ Public Class Form1
     Dim avgData(5) As Integer
     Dim resultData() As Integer
     Dim diffData(5) As Integer
+    'Dim wrtCount As Integer = 0
+
+    Dim CmdRdy As Boolean
 
     Private Sub Button1_Click(sender As System.Object, e As System.EventArgs) Handles Button1.Click
         Dim tmp As String = ""
         If SerialPort1.IsOpen Then
             Timer1.Enabled = False
-
-
-            'CalcAnalogData()
-
-            'For index = 0 To 5
-            '    If Math.Abs(diffData(index)) > 5 Then
-            '        tmp += "-1" + ","
-            '    Else
-            '        tmp += resultData(index).ToString + ","
-            '    End If
-            'Next
 
             Dim blReadFlag As Boolean = False
 
@@ -181,7 +231,6 @@ Public Class Form1
             receivedData = SerialPort1.ReadLine().Trim
 
             '"Button pressed."
-
             If receivedData = "Button pressed." Then
                 blReadFlag = True
             Else
@@ -195,12 +244,16 @@ Public Class Form1
                 Directory.SetCurrentDirectory(root)
                 AppExecute(My.Settings.AppName, My.Settings.AppAugmented)
 
-                RichTextBox1.Text += tmp & vbCrLf
+                Thread.Sleep(15000)
+                CmdRdy = True
             End If
 
             Timer1.Enabled = True
         End If
     End Sub
+
+    Dim SignalCheck As Boolean
+    Dim blReadFlag As Boolean
 
     Public Function CapturedAnalog() As Integer()
         SerialPort1.WriteLine("analog")
@@ -227,7 +280,7 @@ Public Class Form1
     End Function
 
     Sub CalcAnalogData()
-        For j = 1 To 10
+        For j = 1 To 3
             resultData = CapturedAnalog()
             For i = 0 To 5
                 avgData(i) = (avgData(i) * (j - 1) + resultData(i)) / j
@@ -257,6 +310,8 @@ Public Class Form1
         cmdprocess.Start()
 
         Process.Start(application, augmented)
+        Dim S As String = cmdprocess.StandardOutput.ReadLine() 'Console.ReadLine()
+
 
         cmdprocess.StandardInput.WriteLine("exit")  '關閉視窗 
 

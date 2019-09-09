@@ -9,3 +9,4 @@ C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_
 C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Resources.resources
 C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\E35T_FW_Programmer.vbproj.GenerateResource.Cache
 C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Form1.resources
+C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Form2.resources
