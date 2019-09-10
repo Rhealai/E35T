@@ -10,3 +10,7 @@ C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_
 C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\E35T_FW_Programmer.vbproj.GenerateResource.Cache
 C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Form1.resources
 C:\Users\Rioyclai\Documents\Visual Studio 2010\Projects\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.Form2.resources
+S:\rioyclai\P\EE35T\E35T\E35T_FW_Programmer\E35T_FW_Programmer\bin\Debug\cmdline_process.exe.config
+S:\rioyclai\P\EE35T\E35T\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.exe
+S:\rioyclai\P\EE35T\E35T\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.xml
+S:\rioyclai\P\EE35T\E35T\E35T_FW_Programmer\E35T_FW_Programmer\obj\x86\Debug\cmdline_process.pdb

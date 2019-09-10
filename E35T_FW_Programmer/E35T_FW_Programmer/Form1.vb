@@ -317,4 +317,12 @@ Public Class Form1
 
     End Sub
 
+    Public Shared Sub Sleep(ByVal Interval)
+        Dim __time As DateTime = DateTime.Now
+        Dim __Span As Int64 = Interval * 10000 '因為時間是以100納秒為單位。
+        While (DateTime.Now.Ticks - __time.Ticks < __Span)
+            Application.DoEvents()
+        End While
+    End Sub
+
 End Class
