@@ -14,5 +14,11 @@
     <Setting Name="ControlWinName" Type="System.String" Scope="User">
       <Value Profile="(Default)">None</Value>
     </Setting>
+    <Setting Name="ReadyTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">15000</Value>
+    </Setting>
+    <Setting Name="BuringTime" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

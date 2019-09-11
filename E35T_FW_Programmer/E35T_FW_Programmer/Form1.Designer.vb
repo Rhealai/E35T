@@ -27,8 +27,9 @@ Partial Class Form1
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
         Me.ShapeContainer1 = New Microsoft.VisualBasic.PowerPacks.ShapeContainer()
-        Me.ledStatus1 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
+        Me.ledStatus3 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
         Me.ledStatus2 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
+        Me.ledStatus1 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.cbSelectCom = New System.Windows.Forms.ComboBox()
         Me.btnConnected = New System.Windows.Forms.Button()
@@ -46,10 +47,14 @@ Partial Class Form1
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.SerialPort1 = New System.IO.Ports.SerialPort(Me.components)
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
-        Me.ledStatus3 = New Microsoft.VisualBasic.PowerPacks.OvalShape()
         Me.lbProcessStatus = New System.Windows.Forms.Label()
         Me.lbProbePin = New System.Windows.Forms.Label()
         Me.lbTimer1 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.tbReadyTime = New System.Windows.Forms.TextBox()
+        Me.tbBuringTime = New System.Windows.Forms.TextBox()
+        Me.btnDelaySetting = New System.Windows.Forms.Button()
         Me.StatusStrip1.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.SuspendLayout()
@@ -59,14 +64,14 @@ Partial Class Form1
         Me.RichTextBox1.Location = New System.Drawing.Point(12, 140)
         Me.RichTextBox1.Name = "RichTextBox1"
         Me.RichTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical
-        Me.RichTextBox1.Size = New System.Drawing.Size(412, 233)
+        Me.RichTextBox1.Size = New System.Drawing.Size(412, 289)
         Me.RichTextBox1.TabIndex = 0
         Me.RichTextBox1.Text = ""
         '
         'StatusStrip1
         '
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 384)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 432)
         Me.StatusStrip1.Name = "StatusStrip1"
         Me.StatusStrip1.Size = New System.Drawing.Size(730, 22)
         Me.StatusStrip1.TabIndex = 1
@@ -84,17 +89,17 @@ Partial Class Form1
         Me.ShapeContainer1.Margin = New System.Windows.Forms.Padding(0)
         Me.ShapeContainer1.Name = "ShapeContainer1"
         Me.ShapeContainer1.Shapes.AddRange(New Microsoft.VisualBasic.PowerPacks.Shape() {Me.ledStatus3, Me.ledStatus2, Me.ledStatus1})
-        Me.ShapeContainer1.Size = New System.Drawing.Size(730, 406)
+        Me.ShapeContainer1.Size = New System.Drawing.Size(730, 454)
         Me.ShapeContainer1.TabIndex = 2
         Me.ShapeContainer1.TabStop = False
         '
-        'ledStatus1
+        'ledStatus3
         '
-        Me.ledStatus1.FillColor = System.Drawing.Color.Yellow
-        Me.ledStatus1.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
-        Me.ledStatus1.Location = New System.Drawing.Point(24, 12)
-        Me.ledStatus1.Name = "ledStatus1"
-        Me.ledStatus1.Size = New System.Drawing.Size(30, 30)
+        Me.ledStatus3.FillColor = System.Drawing.Color.Yellow
+        Me.ledStatus3.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
+        Me.ledStatus3.Location = New System.Drawing.Point(24, 93)
+        Me.ledStatus3.Name = "ledStatus3"
+        Me.ledStatus3.Size = New System.Drawing.Size(30, 30)
         '
         'ledStatus2
         '
@@ -104,14 +109,22 @@ Partial Class Form1
         Me.ledStatus2.Name = "ledStatus2"
         Me.ledStatus2.Size = New System.Drawing.Size(30, 30)
         '
+        'ledStatus1
+        '
+        Me.ledStatus1.FillColor = System.Drawing.Color.Yellow
+        Me.ledStatus1.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
+        Me.ledStatus1.Location = New System.Drawing.Point(24, 12)
+        Me.ledStatus1.Name = "ledStatus1"
+        Me.ledStatus1.Size = New System.Drawing.Size(30, 30)
+        '
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("新細明體", 12.0!)
         Me.Button1.Location = New System.Drawing.Point(294, 12)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(130, 103)
+        Me.Button1.Size = New System.Drawing.Size(130, 112)
         Me.Button1.TabIndex = 3
-        Me.Button1.Text = "START"
+        Me.Button1.Text = "啟動"
         Me.Button1.UseVisualStyleBackColor = True
         '
         'cbSelectCom
@@ -250,7 +263,7 @@ Partial Class Form1
         Me.GroupBox1.Controls.Add(Me.btnAppPathSet)
         Me.GroupBox1.Controls.Add(Me.btnAppSet)
         Me.GroupBox1.Font = New System.Drawing.Font("新細明體", 12.0!)
-        Me.GroupBox1.Location = New System.Drawing.Point(436, 107)
+        Me.GroupBox1.Location = New System.Drawing.Point(437, 76)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(281, 266)
         Me.GroupBox1.TabIndex = 11
@@ -260,14 +273,6 @@ Partial Class Form1
         'Timer1
         '
         Me.Timer1.Interval = 50
-        '
-        'ledStatus3
-        '
-        Me.ledStatus3.FillColor = System.Drawing.Color.Yellow
-        Me.ledStatus3.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid
-        Me.ledStatus3.Location = New System.Drawing.Point(24, 93)
-        Me.ledStatus3.Name = "ledStatus3"
-        Me.ledStatus3.Size = New System.Drawing.Size(30, 30)
         '
         'lbProcessStatus
         '
@@ -295,15 +300,64 @@ Partial Class Form1
         Me.lbTimer1.Font = New System.Drawing.Font("新細明體", 12.0!)
         Me.lbTimer1.Location = New System.Drawing.Point(75, 103)
         Me.lbTimer1.Name = "lbTimer1"
-        Me.lbTimer1.Size = New System.Drawing.Size(86, 16)
+        Me.lbTimer1.Size = New System.Drawing.Size(120, 16)
         Me.lbTimer1.TabIndex = 12
-        Me.lbTimer1.Text = "Timer:Status"
+        Me.lbTimer1.Text = "COM Port : Status"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("新細明體", 12.0!)
+        Me.Label5.Location = New System.Drawing.Point(434, 345)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(104, 16)
+        Me.Label5.TabIndex = 13
+        Me.Label5.Text = "就緒時間設定"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("新細明體", 12.0!)
+        Me.Label6.Location = New System.Drawing.Point(434, 383)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(104, 16)
+        Me.Label6.TabIndex = 13
+        Me.Label6.Text = "燒錄時間設定"
+        '
+        'tbReadyTime
+        '
+        Me.tbReadyTime.Location = New System.Drawing.Point(544, 345)
+        Me.tbReadyTime.Name = "tbReadyTime"
+        Me.tbReadyTime.Size = New System.Drawing.Size(106, 22)
+        Me.tbReadyTime.TabIndex = 14
+        '
+        'tbBuringTime
+        '
+        Me.tbBuringTime.Location = New System.Drawing.Point(544, 383)
+        Me.tbBuringTime.Name = "tbBuringTime"
+        Me.tbBuringTime.Size = New System.Drawing.Size(106, 22)
+        Me.tbBuringTime.TabIndex = 14
+        '
+        'btnDelaySetting
+        '
+        Me.btnDelaySetting.Font = New System.Drawing.Font("新細明體", 10.0!)
+        Me.btnDelaySetting.Location = New System.Drawing.Point(671, 362)
+        Me.btnDelaySetting.Name = "btnDelaySetting"
+        Me.btnDelaySetting.Size = New System.Drawing.Size(47, 26)
+        Me.btnDelaySetting.TabIndex = 15
+        Me.btnDelaySetting.Text = "Set"
+        Me.btnDelaySetting.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(730, 406)
+        Me.ClientSize = New System.Drawing.Size(730, 454)
+        Me.Controls.Add(Me.btnDelaySetting)
+        Me.Controls.Add(Me.tbBuringTime)
+        Me.Controls.Add(Me.tbReadyTime)
+        Me.Controls.Add(Me.Label6)
+        Me.Controls.Add(Me.Label5)
         Me.Controls.Add(Me.lbTimer1)
         Me.Controls.Add(Me.lbProbePin)
         Me.Controls.Add(Me.lbProcessStatus)
@@ -351,4 +405,9 @@ Partial Class Form1
     Friend WithEvents lbProbePin As System.Windows.Forms.Label
     Friend WithEvents lbTimer1 As System.Windows.Forms.Label
     Public WithEvents ledStatus3 As Microsoft.VisualBasic.PowerPacks.OvalShape
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents Label6 As System.Windows.Forms.Label
+    Friend WithEvents tbReadyTime As System.Windows.Forms.TextBox
+    Friend WithEvents tbBuringTime As System.Windows.Forms.TextBox
+    Friend WithEvents btnDelaySetting As System.Windows.Forms.Button
 End Class

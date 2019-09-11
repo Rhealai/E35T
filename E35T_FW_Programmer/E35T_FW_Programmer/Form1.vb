@@ -12,12 +12,15 @@ Public Class Form1
         tbApp.Text = My.Settings.AppName
         tbAppAugmented.Text = My.Settings.AppAugmented
         tbControlWinName.Text = My.Settings.ControlWinName
+        tbReadyTime.Text = My.Settings.ReadyTime
+        tbBuringTime.Text = My.Settings.BuringTime
 
         comPORT = ""
         For Each sp As String In My.Computer.Ports.SerialPortNames
             cbSelectCom.Items.Add(sp)
         Next
 
+        ToolStripStatusLabel1.Text = "燒錄次數 = " & wrtCount
 
     End Sub
 
@@ -37,7 +40,7 @@ Public Class Form1
                 SerialPort1.Open()
                 btnConnected.Text = "Disconnect"
                 Timer1.Enabled = True
-                lbTimer1.Text = "Timer: ON"
+                lbTimer1.Text = "連線狀態: ON"
                 ledStatus3.FillColor = Color.Green
                 'RichTextBox1.Text += "Timer : ON" & vbCrLf
 
@@ -49,9 +52,9 @@ Public Class Form1
             SerialPort1.Close()
             btnConnected.Text = "Connect"
             Timer1.Enabled = False
-            lbTimer1.Text = "Timer: OFF"
+            lbTimer1.Text = "連線狀態: OFF"
             ledStatus3.FillColor = Color.Yellow
-            RichTextBox1.Text += "Timer : OFF" & vbCrLf
+            'RichTextBox1.Text += "Timer : OFF" & vbCrLf
         End If
     End Sub
 
@@ -78,14 +81,20 @@ Public Class Form1
 
     Private Sub Timer1_Tick(sender As System.Object, e As System.EventArgs) Handles Timer1.Tick
         Dim hWnd As Integer
-        'If (receivedData.Trim() = "Button pressed.") Then
-        '    KeyDown_Enter()
-        '    MsgBox("KeyDown_Enter")
-        'End If
-
-        receivedData = ReceiveSerialData().Trim
         hWnd = FindWindow(vbNullString, My.Settings.ControlWinName)
 
+
+        If hWnd <> 0 Then
+            lbProcessStatus.Text = "燒錄程序:燒錄程式就緒"
+            ledStatus1.FillColor = Color.Green
+            CmdRdy = True
+        Else
+            lbProcessStatus.Text = "燒錄程序:燒錄程式未就緒"
+            ledStatus1.FillColor = Color.Yellow
+            CmdRdy = False
+        End If
+
+        receivedData = ReceiveSerialData().Trim
         Select Case receivedData
             Case "Button pressed."
                 lbProbePin.Text = "探針接觸狀態:接觸"
@@ -101,26 +110,22 @@ Public Class Form1
 
                     If tmp > 50 Then
                         SignalCheck = False
-                        RichTextBox1.Text += "此電路板尚未燒錄" & vbCrLf
-
-                        PostMessage(hWnd, WM_KEYDOWN, 13, 0)
+                        RichTextBox1.Text += "此電路板未完成燒錄" & vbCrLf
                         RichTextBox1.Text += "開始進行燒錄" & vbCrLf
 
-                        BurningFlag = True
+                        PostMessage(hWnd, WM_KEYDOWN, 13, 0)
+                        ProgrammingStatus()
+
+                        CalcAnalogData()
+
+                        SignalMeasure()
 
                     Else
                         SignalCheck = True
-                        RichTextBox1.Text += "此電路已燒錄" & vbCrLf
+                        RichTextBox1.Text += "此電路已完成燒錄" & vbCrLf
                         RichTextBox1.Text += "請移除電路板" & vbCrLf
-                        Dim tmpResult As String = ""
 
-                        For index = 0 To 4
-                            tmpResult &= resultData(index).ToString & ","
-                        Next
-                        tmpResult &= resultData(5).ToString
-                        RichTextBox1.Text += tmpResult & vbCrLf
-
-                        BurningFlag = False
+                        SignalMeasure()
 
                     End If
                 End If
@@ -130,35 +135,54 @@ Public Class Form1
                 ledStatus2.FillColor = Color.Yellow
         End Select
 
-        'If receivedData.Trim() <> "" Then
-        '    RichTextBox1.Text += receivedData
-        'End If
         receivedData = ""
 
-        If BurningFlag Then
-            lbProcessStatus.Text = "燒錄程序:韌體燒錄中"
-            ledStatus1.FillColor = Color.Red
-
-            If SignalCheck Then
-                lbProcessStatus.Text = "燒錄程序:完成燒錄"
-                ledStatus1.FillColor = Color.Green
-                BurningFlag = False
-            End If
-   
-
-        Else
-            If hWnd <> 0 Then
-                lbProcessStatus.Text = "燒錄程序:燒錄程式就緒"
-                ledStatus1.FillColor = Color.Green
-            Else
-                lbProcessStatus.Text = "燒錄程序:燒錄程式未就緒"
-                ledStatus1.FillColor = Color.Yellow
-            End If
-        End If
-
-
+        ToolStripStatusLabel1.Text = "燒錄次數 = " & wrtCount
 
     End Sub
+
+    Sub ProgrammingStatus()
+
+        Timer1.Enabled = False
+        lbProcessStatus.Text = "燒錄程序:韌體燒錄中"
+        ledStatus1.FillColor = Color.Red
+
+        Sleep(My.Settings.BuringTime)
+
+        lbProcessStatus.Text = "燒錄程序:完成燒錄"
+        ledStatus1.FillColor = Color.Green
+
+        wrtCount += 1
+
+        Timer1.Enabled = True
+
+    End Sub
+
+    Sub SignalMeasure()
+        Timer1.Enabled = False
+        lbProcessStatus.Text = "燒錄程序:訊號量測"
+        ledStatus1.FillColor = Color.Blue
+
+        'CalcAnalogData()
+
+        Dim tmpResult As String = ""
+
+        For index = 0 To 4
+            tmpResult &= resultData(index).ToString & ","
+        Next
+        tmpResult &= resultData(5).ToString
+        RichTextBox1.Text += tmpResult & vbCrLf
+
+        Sleep(500)
+
+        lbProcessStatus.Text = "燒錄程序:完成量測"
+        ledStatus1.FillColor = Color.Green
+
+        Sleep(500)
+
+        Timer1.Enabled = True
+    End Sub
+
 
     Private Sub cbSelectCom_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles cbSelectCom.SelectedIndexChanged
         If (cbSelectCom.SelectedItem <> "") Then
@@ -215,7 +239,7 @@ Public Class Form1
     Dim avgData(5) As Integer
     Dim resultData() As Integer
     Dim diffData(5) As Integer
-    'Dim wrtCount As Integer = 0
+    Dim wrtCount As Integer = 0
 
     Dim CmdRdy As Boolean
 
@@ -227,7 +251,8 @@ Public Class Form1
             Dim blReadFlag As Boolean = False
 
             SerialPort1.WriteLine("btn")
-            Thread.Sleep(20)
+            'Thread.Sleep(20)
+            Sleep(20)
             receivedData = SerialPort1.ReadLine().Trim
 
             '"Button pressed."
@@ -244,8 +269,13 @@ Public Class Form1
                 Directory.SetCurrentDirectory(root)
                 AppExecute(My.Settings.AppName, My.Settings.AppAugmented)
 
-                Thread.Sleep(15000)
-                CmdRdy = True
+                Sleep(My.Settings.ReadyTime)
+
+                If FindWindow(vbNullString, My.Settings.ControlWinName) Then
+                    ProgrammingStatus()
+                    CmdRdy = True
+                End If
+                
             End If
 
             Timer1.Enabled = True
@@ -258,7 +288,8 @@ Public Class Form1
     Public Function CapturedAnalog() As Integer()
         SerialPort1.WriteLine("analog")
 
-        Thread.Sleep(20)
+        'Thread.Sleep(20)
+        Sleep(20)
         Dim receviedData As String = SerialPort1.ReadLine()
         receviedData.Trim()
 
@@ -312,7 +343,6 @@ Public Class Form1
         Process.Start(application, augmented)
         Dim S As String = cmdprocess.StandardOutput.ReadLine() 'Console.ReadLine()
 
-
         cmdprocess.StandardInput.WriteLine("exit")  '關閉視窗 
 
     End Sub
@@ -325,4 +355,10 @@ Public Class Form1
         End While
     End Sub
 
+    Private Sub btnDelaySetting_Click(sender As System.Object, e As System.EventArgs) Handles btnDelaySetting.Click
+        My.Settings.ReadyTime = Val(tbReadyTime.Text)
+        My.Settings.BuringTime = Val(tbBuringTime.Text)
+        My.Settings.Save()
+
+    End Sub
 End Class

@@ -101,6 +101,30 @@ Namespace My
                 Me("ControlWinName") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("15000")>  _
+        Public Property ReadyTime() As Integer
+            Get
+                Return CType(Me("ReadyTime"),Integer)
+            End Get
+            Set
+                Me("ReadyTime") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("3000")>  _
+        Public Property BuringTime() As Integer
+            Get
+                Return CType(Me("BuringTime"),Integer)
+            End Get
+            Set
+                Me("BuringTime") = value
+            End Set
+        End Property
     End Class
 End Namespace
 
